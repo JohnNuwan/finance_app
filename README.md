@@ -140,3 +140,12 @@ Definition host : **8090**
 
 
 ---
+
+
+# First Init
+
+Vous Trouver un fichier *RestAPI/First_init_constructor_info.py*  lancer le avec la commande:
+
+		python RestAPI/First_init_constructor_info.py
+
+suivre les instructions

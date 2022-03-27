@@ -2,10 +2,12 @@ anyio==3.5.0
 art==5.5
 asgiref==3.5.0
 certifi==2021.10.8
+cffi==1.15.0
 charset-normalizer==2.0.12
 click==8.0.4
 colorama==0.4.4
 commonmark==0.9.1
+cryptography==36.0.2
 cycler==0.11.0
 fastapi==0.75.0
 fonttools==4.31.2
@@ -18,6 +20,7 @@ numpy==1.22.3
 packaging==21.3
 pandas==1.4.1
 Pillow==9.0.1
+pycparser==2.21
 pydantic==1.9.0
 Pygments==2.11.2
 pyparsing==3.0.7
