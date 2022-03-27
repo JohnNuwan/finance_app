@@ -136,12 +136,8 @@ def support_resistance(df, duration=5,spread=0):
     df.loc[condition_1_sell & condition_2_sell & condition_3_sell, "signal"] = -1
 
 
-    # Compute the profits
-    df["pct"] = df["close"].pct_change(1)
-
-    df["return"] = np.array([df["pct"].shift(i) for i in range(duration)]).sum(axis=0) * (df["signal"].shift(duration))
-    df.loc[df["return"]==-1, "return"] = df["return"]-spread
-    df.loc[df["return"]==1, "return"] = df["return"]-spread
+  
+ 
 
 
     return df
