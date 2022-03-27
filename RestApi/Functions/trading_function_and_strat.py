@@ -1,4 +1,20 @@
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# =============================================================================
+# Created By  : K.Azazel
+# Created Date: 27/03/2022
+# =============================================================================
+"""
+    Docstring :
+            Fichier Contenant les fonction de tradion principal 
+                    recuperation data
+                    recuperation Past data
+                    Calcule Support / Resistance
+                    Open Order sur la PlatFrom MetaTrader5
+"""
+# =============================================================================
+# Imports
+# =============================================================================
 
 import os
 import sys 

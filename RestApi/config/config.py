@@ -15,6 +15,8 @@ from art import *
 from rich.console import Console
 from rich.style import Style
 from rich.theme import Theme
+from rich.table import Table
+from rich import box
 
 
 __author__ = "K.Azazel"
@@ -45,7 +47,7 @@ cs = Console(theme=custom_theme)
 #__________________________________________________
 # Definition Serveur
 host = "localhost"
-port = 8090
+port = 8095
 debug = True
 url = f"http://{host}:{port}"
 
@@ -53,8 +55,7 @@ url = f"http://{host}:{port}"
 # Definition Programme Name
 prog_name = "RestAPI For Finance"
 
-from rich.table import Table
-from rich import box
+
 def sep():
 	cs.print("-"*30,justify='center',style="separate")
 
