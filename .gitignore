@@ -2,18 +2,15 @@
 
 Analyse/Functions/
 
-# *.json
-# *.key
-# # Ignore Logs
-# logs
-# *.log
 
 # Ignore venv directory
 /venv
+Analyse/Functions/
 
 # The file containing environment variables 
 .env
-
+.json
+.key
 # Ignore IDE specific files
 .idea/
 .vscode/

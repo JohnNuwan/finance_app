@@ -166,24 +166,21 @@ async def teste(name:str,timeframe:str,num_bars:int):
 
 @app.get('/open_position/{name}/{timeframe}/{Type}/{comment}/{lot}')
 async def open_position(name:str,timeframe:str,Type:str,comment:str,lot:float):
-	try:
-		data = {
-				"Name" : name,
-				"TimeFrame": timeframe,
-				"Type" : Type,
-				'Comment': comment,
-				"Lot" : lot,
-			}
-		signal = open_trade_buy(action=Type, symbol=name, lot=lot,  deviation=20, comment=comment)
-		print(signal)
-		if signal == True:
+	verif = chek_take_position(symbol=name,comment=comment,Type=Type)
+	print(verif,Type)
+	if verif['Total'] == 0: 
+		try:
+			signal = open_trade_buy(action=Type, symbol=name, lot=lot,  deviation=20, comment=comment)
 			print(signal)
-			print(data)
-		else:
-			return e
-	except Exception as e:
-		print(e)
-
+			if signal == True:
+				print(signal)
+				print(data)
+			else:
+				return e
+		except Exception as e:
+			print(e)
+	if verif['Total'] < 1 :
+		splite_reverse_position(name,Type,comment)
 	return data
 
 

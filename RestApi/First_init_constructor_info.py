@@ -111,6 +111,11 @@ def implement_user(user_info,MASTER_KEY):
 		cs.print(e,style='warning')
 
 
+
+def make_folder(path):
+	if not os.path.exists(path):
+		os.makedirs(path)
+
 def main():
 
 	sep_log("Verification Path Init")
