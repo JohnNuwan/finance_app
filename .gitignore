@@ -1,11 +1,12 @@
 # Ignore the  directory
 Analyse/config/
+RestApi/config/
 
-RestApi/config/user_info.json
-RestApi/config/MASTER_KEY.key
-# Ignore Logs
-logs
-*.log
+# *.json
+# *.key
+# # Ignore Logs
+# logs
+# *.log
 
 # Ignore venv directory
 /venv
