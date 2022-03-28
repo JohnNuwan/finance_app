@@ -1,6 +1,6 @@
 # Ignore the  directory
 Analyse/config/
-RestApi/config/
+Analyse/Functions/
 
 # *.json
 # *.key
