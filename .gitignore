@@ -1,5 +1,5 @@
 # Ignore the  directory
-Analyse/config/
+
 Analyse/Functions/
 
 # *.json
