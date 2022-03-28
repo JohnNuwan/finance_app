@@ -2,7 +2,7 @@
 
 ---
 
-<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.dI06HzHOuhwXKnLLMhHVTwHaHa%26pid%3DApi&f=1" alt="drawing" width="125"/>
+<!-- <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.dI06HzHOuhwXKnLLMhHVTwHaHa%26pid%3DApi&f=1" alt="drawing" width="125"/> -->
 
 
 ---
@@ -154,3 +154,8 @@ Vous Trouver un fichier *RestApi/First_init_constructor_info.py*  lancer le avec
 		python RestAPI/First_init_constructor_info.py
 
 suivre les instructions
+
+---
+# Analyse
+
+ReadMe dans le Folder
