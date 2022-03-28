@@ -1,8 +1,8 @@
 # Ignore the  directory
 Analyse/config/
 
-/user_info.json
-/*.key
+RestApi/config/user_info.json
+RestApi/config/MASTER_KEY.key
 # Ignore Logs
 logs
 *.log
