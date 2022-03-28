@@ -11,6 +11,8 @@
 # =============================================================================
 # Imports
 # =============================================================================
+
+import os,sys
 from art import *
 from rich.console import Console
 from rich.style import Style
@@ -55,6 +57,7 @@ url = f"http://{host}:{port}"
 # Definition Programme Name
 prog_name = "RestAPI For Finance"
 
+description = f" Welcome To Api For Finance Application . Find more information at http://{host}:{port}/docs"
 
 def sep():
 	cs.print("-"*30,justify='center',style="separate")

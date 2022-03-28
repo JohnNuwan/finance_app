@@ -43,13 +43,17 @@ import ta
 from art import *
 
 from config.config import *
-from Functions import *
-
+from Functions.trading_function_and_strat import *
 
 
 os.system('cls')
 banner()
 
+# print(os.getcwd())
+file = open("./config/MASTER_KEY.key", "r")
+MASTER_KEY =  file.read()
+
+# sys.exit()
 app = FastAPI()
 
 sur_achat = 70
@@ -61,7 +65,7 @@ if not os.path.exists(path_ohlc):
 
 @app.get('/')
 async def home( request: Request):
-	return {'status': 1, 'message': 'ok', 'Serveur': prog_name}
+	return {'status': 1, 'message': 'ok', 'Serveur': prog_name,"Description":description}
 	# return {"Hello":"World" , "client_host": client_host}
 
 
@@ -94,7 +98,7 @@ async def position_total():
 		return {"Total Positions" : len(usd_positions)}
 
 
-
+# 
 
 @app.get('/OHLC/{name}/{timeframe}/{num_bars}')
 async def ohlc(name:str,timeframe:str,num_bars:int):
@@ -110,7 +114,7 @@ async def ohlc(name:str,timeframe:str,num_bars:int):
 @app.get('/sup_res/{name}/{timeframe}/{num_bars}')
 async def sup_res(name:str,timeframe:str,num_bars:int):
 	df =  get_data(name, timeframe, num_bars)
-	data = support_resistance(df, duration=6).tail()
+	data = support_resistance(df, duration=6)
 	return data.to_json()
 
 

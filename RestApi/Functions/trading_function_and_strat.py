@@ -209,3 +209,62 @@ def get_info(symbol):
     except Exception as e:
         return e
 
+def ichi(name,timeframe,num_bars):
+    route_data = f"{url}/OHLC/{name}/{timeframe}/{num_bars}"
+    r2 = requests.get(route_data)
+    data = json.loads(r2.text)
+    df = pd.read_json(data)
+
+
+    nine_periodf_high = df['high'].rolling(window= 9).max()
+    nine_periodf_low = df['low'].rolling(window= 9).min()
+
+    periodf26_high = df['high'].rolling(window=26).max()
+    periodf26_low = df['low'].rolling(window=26).min()
+
+
+    df['tenkan_sen'] = (nine_periodf_high + nine_periodf_low) /2
+
+    # Kijun-sen (Base Line): (26-periodf high + 26-periodf low)/2))
+    df['kijun_sen'] = (periodf26_high + periodf26_low) / 2
+    df['prev_kijun_sen'] = df['kijun_sen'].shift(1)
+    df['prev_tenkan_sen'] = df['tenkan_sen'].shift(1)
+
+    # Senkou Span A (Leadfing Span A): (Conversion Line + Base Line)/2))
+    df['senkou_span_a'] = ((df['tenkan_sen'] + df['kijun_sen']) / 2).shift(26)
+    # Senkou Span B (Leadfing Span B): (52-periodf high + 52-periodf low)/2))
+    periodf52_high = df['high'].rolling(window=52).max()
+    periodf52_low = df['low'].rolling(window=52).min()
+    df['senkou_span_b'] = ((periodf52_high + periodf52_low) / 2).shift(52)
+
+    d = df.copy()
+    d['chikou_span'] = d['close'].shift(-26)
+    # d.dropna(inplace=True)
+    d['above_cloud'] = 0
+    d['above_cloud'] = np.where((d['low'] > d['senkou_span_a'])  & (d['low'] > d['senkou_span_b'] ), 1, d['above_cloud'])
+    d['above_cloud'] = np.where((d['high'] < d['senkou_span_a']) & (d['high'] < d['senkou_span_b']), -1, d['above_cloud'])
+    d['A_above_B'] = np.where((d['senkou_span_a'] > d['senkou_span_b']), 1, -1)
+    d['tenkan_kiju_cross'] = np.NaN
+    d['tenkan_kiju_cross'] = np.where((d['tenkan_sen'].shift(1) <= d['kijun_sen'].shift(1)) & (d['tenkan_sen'] > d['kijun_sen']), 1, d['tenkan_kiju_cross'])
+    d['tenkan_kiju_cross'] = np.where((d['tenkan_sen'].shift(1) >= d['kijun_sen'].shift(1)) & (d['tenkan_sen'] < d['kijun_sen']), -1, d['tenkan_kiju_cross'])
+    d['price_tenkan_cross'] = np.NaN
+    d['price_tenkan_cross'] = np.where((d['open'].shift(1) <= d['tenkan_sen'].shift(1)) & (d['open'] > d['tenkan_sen']), 1, d['price_tenkan_cross'])
+    d['price_tenkan_cross'] = np.where((d['open'].shift(1) >= d['tenkan_sen'].shift(1)) & (d['open'] < d['tenkan_sen']), -1, d['price_tenkan_cross'])
+    d['buy'] = np.NaN
+    d['buy'] = np.where((d['above_cloud'].shift(1) == 1) & (d['A_above_B'].shift(1) == 1) & ((d['tenkan_kiju_cross'].shift(1) == 1) | (d['price_tenkan_cross'].shift(1) == 1)), 1, d['buy'])
+    d['buy'] = np.where(d['tenkan_kiju_cross'].shift(1) == -1, 0, d['buy'])
+    # d['buy'].ffill(inplace=True)
+
+    d['sell'] = np.NaN
+    d['sell'] = np.where((d['above_cloud'].shift(1) == -1) & (d['A_above_B'].shift(1) == -1) & ((d['tenkan_kiju_cross'].shift(1) == -1) | (d['price_tenkan_cross'].shift(1) == -1)), -1, d['sell'])
+    d['sell'] = np.where(d['tenkan_kiju_cross'].shift(1) == 1, 0, d['sell'])
+    # d['sell'].ffill(inplace=True)
+    d['position'] = d['buy'] + d['sell']
+    d['stock_returns'] = np.log(d['open']) - np.log(d['open'].shift(1))
+    d['strategy_returns'] = d['stock_returns'] * d['position']
+    # d[['stock_returns','strategy_returns']].cumsum().plot(figsize=(15,8))
+
+    # print(d.tail(2))
+
+    data  = d.fillna(0, inplace=False)
+    return data

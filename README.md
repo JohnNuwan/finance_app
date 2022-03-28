@@ -1,6 +1,11 @@
 # Finance APP | Serveur | Worker | Clients | RestApi | Analyse
 
 ---
+
+<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.dI06HzHOuhwXKnLLMhHVTwHaHa%26pid%3DApi&f=1" alt="drawing" width="125"/>
+
+
+---
 **Language**  : *Python 3.8.0*
 
 **PlatForme** : *MetaTrader5*
@@ -144,7 +149,7 @@ Definition host : **8090**
 
 # First Init
 
-Vous Trouver un fichier *RestAPI/First_init_constructor_info.py*  lancer le avec la commande:
+Vous Trouver un fichier *RestApi/First_init_constructor_info.py*  lancer le avec la commande:
 
 		python RestAPI/First_init_constructor_info.py
 

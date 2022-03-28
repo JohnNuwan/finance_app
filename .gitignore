@@ -1,0 +1,18 @@
+# Ignore the  directory
+Analyse/config/
+RestApi/config/user_info.json
+*.key
+# Ignore Logs
+logs
+*.log
+
+# Ignore venv directory
+/venv
+
+# The file containing environment variables 
+.env
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.sw*
