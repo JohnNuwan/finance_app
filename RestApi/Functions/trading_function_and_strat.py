@@ -354,131 +354,127 @@ def engulfing(df):
 
 def chek_take_position(symbol,comment,Type):
 	url = f"http://{host}:{port}"
-	try:
-		route_position = "/positions_en_court"
-		url = f"{url}{route_position}"
-		cs.log(url)
-		count = 0
-		volume_count = 0
 
-		tt_pips = 0
-		profit = 0
-		tt_change = 0
-		itme_now = datetime.now()
-		recv_data = requests.get(url)
-		encode_data = json.loads(recv_data.text)
-		# cs.log(encode_data)
-		df = pd.read_json(encode_data)
-		list_frame = []
+	route_position = "/positions_en_court"
+	url = f"{url}{route_position}"
+	cs.log(url)
+	count = 0
+	volume_count = 0
 
-		df.drop(columns=['external_id','time_msc', 'reason','time_update','time_update_msc'],inplace=True)
-		df['time'] = pd.to_datetime(df['time'], unit='s')
-		df.set_index(df['time'],inplace=True)
-		df["pct_chang"] =  df.apply(lambda row: calc_dif(row),axis=1)
-		df["Pips"] =  df.apply(lambda row: pips(row),axis=1)
+	tt_pips = 0
+	profit = 0
+	tt_change = 0
+	itme_now = datetime.now()
+	recv_data = requests.get(url)
+	encode_data = json.loads(recv_data.text)
+	# cs.log(encode_data)
+	df = pd.read_json(encode_data)
+	list_frame = []
 
-		print(df)
-		# symbol_df_filtre = pd.DataFrame()
+	df.drop(columns=['external_id','time_msc', 'reason','time_update','time_update_msc'],inplace=True)
+	df['time'] = pd.to_datetime(df['time'], unit='s')
+	df.set_index(df['time'],inplace=True)
+	df["pct_chang"] =  df.apply(lambda row: calc_dif(row),axis=1)
+	df["Pips"] =  df.apply(lambda row: pips(row),axis=1)
 
-		for row in df.itertuples():
-			# print(f"{row.symbol}      {row.type}      {row.comment}      {row.profit}      {row.volume}")
-			if row.symbol == symbol:#
-				# print(row)
-				if row.comment == comment:
-					if row.type == Type:
-						volume_count += row.volume
-						profit += row.profit
-						tt_change += row.pct_chang
-						tt_pips += row.Pips
-						print(f"{row.symbol} {row.type} {row.ticket} Changement\t:\t",calc_dif(row))
-						count +=1
+	print(df)
+	# symbol_df_filtre = pd.DataFrame()
 
-		data_send = {
-				"Name": symbol,
-				"Type":Type,
-				"Total":count,
-				'TT_Volume': volume_count,
-				"profit": profit,
-				"TT_Change": tt_change,
-				"TT_Pips" : tt_pips
-		}
-		return data_send
-					# # last_time = row.index
-					# data_check = {
-					#       "time" : row.time,
-					#       "Name": symbol,
-					#       "Nb Pos" : count,
-					#       "Lot" : volume_count,
-					#       "Type" : Type
-					#   }
-					# # df = pd.DataFrame(data_check)
-					# print(data_check)
-					# return data_check#df.to_json()
-			
-			# else :
-				# return "Note Data"
-	except Exception as e:
-		return e
+	for row in df.itertuples():
+		# print(f"{row.symbol}      {row.type}      {row.comment}      {row.profit}      {row.volume}")
+		if row.symbol == symbol:#
+			# print(row)
+			if row.comment == comment:
+				if row.type == Type:
+					volume_count += row.volume
+					profit += row.profit
+					tt_change += row.pct_chang
+					tt_pips += row.Pips
+					print(f"{row.symbol} {row.type} {row.ticket} Changement\t:\t",calc_dif(row))
+					count +=1
+
+	data_send = {
+			"Name": symbol,
+			"Type":Type,
+			"Total":count,
+			'TT_Volume': volume_count,
+			"profit": profit,
+			"TT_Change": tt_change,
+			"TT_Pips" : tt_pips
+	}
+	return data_send
+				# # last_time = row.index
+				# data_check = {
+				#       "time" : row.time,
+				#       "Name": symbol,
+				#       "Nb Pos" : count,
+				#       "Lot" : volume_count,
+				#       "Type" : Type
+				#   }
+				# # df = pd.DataFrame(data_check)
+				# print(data_check)
+				# return data_check#df.to_json()
+		
+		# else :
+			# return "Note Data"
+
 
 
 
 
 def splite_reverse_position(name,Type,comment):
 	url = f"http://{host}:{port}"
-	try:
-		route_position = "/positions_en_court"
-		url = f"{url}{route_position}"
-		cs.log(url)
-		count = 0
-		volume_count = 0
+	route_position = "/positions_en_court"
+	url = f"{url}{route_position}"
+	cs.log(url)	
+	count = 0
+	volume_count = 0
 
-		tt_pips = 0
-		profit = 0
-		tt_change = 0
-		itme_now = datetime.now()
-		recv_data = requests.get(url)
-		encode_data = json.loads(recv_data.text)
-		# cs.log(encode_data)
-		df = pd.read_json(encode_data)
-		list_frame = []
+	tt_pips = 0
+	profit = 0
+	tt_change = 0
+	itme_now = datetime.now()
+	recv_data = requests.get(url)
+	encode_data = json.loads(recv_data.text)
+	# cs.log(encode_data)
+	df = pd.read_json(encode_data)
+	list_frame = []
 
-		df.drop(columns=['external_id','time_msc', 'reason','time_update','time_update_msc'],inplace=True)
-		df['time'] = pd.to_datetime(df['time'], unit='s')
-		df.set_index(df['time'],inplace=True)
-		df["pct_chang"] =  df.apply(lambda row: calc_dif(row),axis=1)
-		df["Pips"] =  df.apply(lambda row: pips(row),axis=1)
+	df.drop(columns=['external_id','time_msc', 'reason','time_update','time_update_msc'],inplace=True)
+	df['time'] = pd.to_datetime(df['time'], unit='s')
+	df.set_index(df['time'],inplace=True)
+	df["pct_chang"] =  df.apply(lambda row: calc_dif(row),axis=1)
+	df["Pips"] =  df.apply(lambda row: pips(row),axis=1)
+	for row in df.itertuples():
+		# if row.symbol != name:
+		# 	cs.print("Not Good",style='warning')
+		if row.symbol == name and row.comment == comment:
+			if row.type == Type:
+				print(row.pct_chang())
+				pass
+				# print("Same Type")
+				# print(f"Symbol : {row.symbol}\nType : {row.type}\nComment : {row.comment}\nProfit : {row.profit}\nPips : {row.Pips}")
+			else:
+				print("-"*30)
+				cs.print("Good",style="good")
+				cs.print("Inverse symbol", style='danger')
+				print(f"Symbol : {row.symbol}\nType : {row.type}\nVolume : {row.volume}\nComment : {row.comment}\nProfit : {row.profit}\nPips : {row.Pips}")
+				cs.print("\nSPLITE OR CLOSE POSITIONS!!",justify='center')
+				if row.profit < 0 or row.volume == 0.01:
+					cs.print("CLOSE ", justify='center',style='danger')
+					close_position(row.symbol,row.type,row.identifier,new_sl,row.volume,'Close Reverse')
 
-		print(df)
-		for row in df.itertuples():
-			# if row.symbol != name:
-			# 	cs.print("Not Good",style='warning')
-			if row.symbol == name and row.comment == comment:
-				if row.type == Type:
-					print(row.pct_chang())
-					pass
-					# print("Same Type")
-					# print(f"Symbol : {row.symbol}\nType : {row.type}\nComment : {row.comment}\nProfit : {row.profit}\nPips : {row.Pips}")
-				else:
-					print("-"*30)
-					cs.print("Good",style="good")
-					cs.print("Inverse symbol", style='danger')
-					print(f"Symbol : {row.symbol}\nType : {row.type}\nVolume : {row.volume}\nComment : {row.comment}\nProfit : {row.profit}\nPips : {row.Pips}")
-					cs.print("\nSPLITE OR CLOSE POSITIONS!!",justify='center')
-					if row.profit < 0 or row.volume == 0.01:
-						cs.print("CLOSE ", justify='center',style='danger')
-						close_position(row.symbol,row.type,row.identifier,new_sl,row.volume,'Close Reverse')
+				if row.profit > 0:
+						cs.print("Splite",justify='center', style='info')
+						cs.print("Move SL To BE + 1%",justify='left', style='info')
+						print(f"Init SL : {row.sl}")
+						new_sl = (row.price_current + row.price_open)/2
+						print(f"New SL : {new_sl}")
+						split_position(row.symbol,row.type,row.identifier,row.volume,'Teste API SPLIT')
+						change_sl(row.symbol,row.type,row.identifier,new_sl,"Split")
+						return True
 
-					if row.profit > 0:
-							cs.print("Splite",justify='center', style='info')
-							cs.print("Move SL To BE + 1%",justify='left', style='info')
-							print(f"Init SL : {row.sl}")
-							new_sl = (row.price_current + row.price_open)/2
-							print(f"New SL : {new_sl}")
-							split_position(row.symbol,row.type,row.identifier,row.volume,'Teste API SPLIT')
-							change_sl(row.symbol,row.type,row.identifier,new_sl,"Split")
 
-	except Exception as e:
-		print(e)
 
 
 def close_position(symbol,action,positions,lot,comment):

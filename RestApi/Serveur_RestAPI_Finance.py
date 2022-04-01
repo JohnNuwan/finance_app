@@ -87,6 +87,7 @@ async def teste():
 
 @app.get('/position_total')
 async def position_total():
+	print('Chargement route position_total')
 	mt5.initialize()
 	account_info=mt5.account_info()
 	# get the list of positions on symbols whose names contain "*USD*"
@@ -166,22 +167,46 @@ async def teste(name:str,timeframe:str,num_bars:int):
 
 @app.get('/open_position/{name}/{timeframe}/{Type}/{comment}/{lot}')
 async def open_position(name:str,timeframe:str,Type:str,comment:str,lot:float):
-	verif = chek_take_position(symbol=name,comment=comment,Type=Type)
-	print(verif,Type)
-	if verif['Total'] == 0: 
-		try:
-			signal = open_trade_buy(action=Type, symbol=name, lot=lot,  deviation=20, comment=comment)
+	# print("Essai Ouverture")
+	# # verif = chek_take_position(symbol=name,comment=comment,Type=Type)
+	# # print(verif,Type)
+	# # if verif['Total'] == 0: 
+	# # 	# print("Sell Time ")
+	# # 	# message(symbol=name,ut='M1',Type="Sell",price=price)
+
+	# # 	data = {
+	# # 			"Name" : name,
+	# # 			"TimeFrame": timeframe,
+	# # 			"Type" : Type,
+	# # 			'Comment': comment,
+	# # 			"Lot" : lot,
+	# # 		}
+	# # 	signal = open_trade_buy(action=Type, symbol=name, lot=lot,  deviation=20, comment=comment)
+	# # 	print(signal)
+	# # 	if signal == True:
+	# # 		print(signal)
+	# # 		print(data)
+
+	# # if verif['Total'] < 1 :
+	# data = splite_reverse_position(name,Type,comment)
+	# return data
+	try:
+		data = {
+				"Name" : name,
+				"TimeFrame": timeframe,
+				"Type" : Type,
+				'Comment': comment,
+				"Lot" : lot,
+			}
+		signal = open_trade_buy(action=Type, symbol=name, lot=lot,  deviation=20, comment=comment)
+		print(signal)
+		if signal == True:
 			print(signal)
-			if signal == True:
-				print(signal)
-				print(data)
-			else:
-				return e
-		except Exception as e:
-			print(e)
-	if verif['Total'] < 1 :
-		splite_reverse_position(name,Type,comment)
-	return data
+			print(data)
+		else:
+			return e
+	except Exception as e:
+		print(e)
 
 
 
