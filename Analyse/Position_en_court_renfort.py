@@ -107,7 +107,7 @@ def calc_dif(df):
 def renfort():
 
 	comment = "renfort_engulfin"
-	lot = 0.02
+	lot = 0.2
 	# get the list of positions on symbols whose names contain "*USD*"
 	usd_positions=mt5.positions_get()
 	if usd_positions==None:
@@ -186,7 +186,8 @@ def get_data(name,timeframe,num_bars=200):
 	return df
 
 def worker():
-	Management_position()
+	# Management_position()
+	renfort()
 
 
 schedule.every(1).minutes.do(worker)

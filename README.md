@@ -16,6 +16,10 @@
 - [*Admiral Market*](https://admiralmarkets.com/start-trading/admiral-invest-stocks-and-etfs?raf=53471867)
 - [*VantageFX*](https://www.vantagemarkets.com/forex-trading/forex-trading-account/?affid=58014)
 
+
+**Suivie Robot**
+
+- [*Live_Stat*](https://www.mql5.com/en/signals/1471615?source=Site+Signals+My#!tab=account)
 ---
 
 
