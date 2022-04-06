@@ -44,7 +44,7 @@ triger_signal_init = 0
 # lot = input("Taille Lots :  ")
 comment = f'Support_Ress'
 
-list_name = ["USDCAD","GBPUSD",'EURUSD','USDJPY','[DAX40]','[DJI30]']
+list_name = ['[DAX40]','[DJI30]']
 # route_position = f"{url}/open_position/{name}/{timeframe}/{Type}/{comment}/{lot}"
 # print(route_position)
 
@@ -128,7 +128,7 @@ def engulfing(df):
 def worker(name,timeframe):
 	# global num_bars
 	# global url
-	lot = 0.02
+	lot = 0.2
 	triger_signal = 0
 	route_data = f"{url}/sup_res/{name}/{timeframe}/{num_bars}"
 	r2 = requests.get(route_data)
@@ -235,7 +235,7 @@ def worker_intra_m15():
 		data = pd.Series(process).to_string()
 		print(data)
 
-		message_analyse(data,intra_webhook)
+		# message_analyse(data,intra_webhook)
 
 
 def worker_scalp_m5():

@@ -26,6 +26,9 @@ import time
 import schedule
 
 import pandas as pd
+import numpy as np 
+
+
 os.system('cls')
 
 
@@ -90,46 +93,47 @@ def open_trade_buy(action, symbol, lot,  deviation, comment):
 
 
 def engulfing(df):
-    
-    # Import / Features engineering
-    # df = MT5.get_data(symbol, 70, timeframe=mt5.TIMEFRAME_D1)
-    
-    
-    df["Candle way"] = -1
-    df.loc[(df["open"] - df["close"]) < 0, "Candle way"] = 1
-    df["amplitude"] = np.abs(df["close"] - df["open"])
-    
-    
-    buy = (df["Candle way"].shift(5).iloc[-1] == -1) and\
-        (df["Candle way"].shift(4).iloc[-1] == -1) and\
-        (df["Candle way"].shift(3).iloc[-1] == -1) and\
-        (df["Candle way"].shift(2).iloc[-1] == -1) and\
-        (df["Candle way"].shift(1).iloc[-1] == -1) and\
-        (df["Candle way"].iloc[-1] == 1) and\
-        (df["close"].shift(1).iloc[-1] < df["open"].iloc[-1]*(1+0.5/100)) and\
-        (df["close"].shift(1).iloc[-1] > df["open"].iloc[-1]*(1-0.5/100)) and\
-        (df["amplitude"].shift(1).iloc[-1]*1.5 < df["amplitude"].iloc[-1])
-    
-    
-    
-    sell = (df["Candle way"].shift(5).iloc[-1] == 1) and\
-       (df["Candle way"].shift(4).iloc[-1] == 1) and\
-       (df["Candle way"].shift(3).iloc[-1] == 1) and\
-       (df["Candle way"].shift(2).iloc[-1] == 1) and\
-       (df["Candle way"].shift(1).iloc[-1] == 1) and\
-       (df["Candle way"].iloc[-1] == -1) and\
-       (df["close"].shift(1).iloc[-1] < df["open"].iloc[-1]*(1+0.5/100)) and\
-       (df["close"].shift(1).iloc[-1] > df["open"].iloc[-1]*(1-0.5/100)) and\
-       (df["amplitude"].shift(1).iloc[-1] * 1.5< df["amplitude"].iloc[-1])
-    
+	
+	# Import / Features engineering
+	# df = MT5.get_data(symbol, 70, timeframe=mt5.TIMEFRAME_D1)
+	
+	
+	df["Candle way"] = -1
+	df.loc[(df["open"] - df["close"]) < 0, "Candle way"] = 1
+	df["amplitude"] = np.abs(df["close"] - df["open"])
+	
+	
+	buy = (df["Candle way"].shift(5).iloc[-1] == -1) and\
+		(df["Candle way"].shift(4).iloc[-1] == -1) and\
+		(df["Candle way"].shift(3).iloc[-1] == -1) and\
+		(df["Candle way"].shift(2).iloc[-1] == -1) and\
+		(df["Candle way"].shift(1).iloc[-1] == -1) and\
+		(df["Candle way"].iloc[-1] == 1) and\
+		(df["close"].shift(1).iloc[-1] < df["open"].iloc[-1]*(1+0.5/100)) and\
+		(df["close"].shift(1).iloc[-1] > df["open"].iloc[-1]*(1-0.5/100)) and\
+		(df["amplitude"].shift(1).iloc[-1]*1.5 < df["amplitude"].iloc[-1])
+	
+	
+	
+	sell = (df["Candle way"].shift(5).iloc[-1] == 1) and\
+	   (df["Candle way"].shift(4).iloc[-1] == 1) and\
+	   (df["Candle way"].shift(3).iloc[-1] == 1) and\
+	   (df["Candle way"].shift(2).iloc[-1] == 1) and\
+	   (df["Candle way"].shift(1).iloc[-1] == 1) and\
+	   (df["Candle way"].iloc[-1] == -1) and\
+	   (df["close"].shift(1).iloc[-1] < df["open"].iloc[-1]*(1+0.5/100)) and\
+	   (df["close"].shift(1).iloc[-1] > df["open"].iloc[-1]*(1-0.5/100)) and\
+	   (df["amplitude"].shift(1).iloc[-1] * 1.5< df["amplitude"].iloc[-1])
+	
 
-    return buy, sell
+	return buy, sell
 
 def worker(name,timeframe):
 	# global num_bars
 	# global url
 	lot = 0.02
 	triger_signal = 0
+	comment = f'Support_Ress_Candels_{timeframe}'
 	route_data = f"{url}/sup_res/{name}/{timeframe}/{num_bars}"
 	r2 = requests.get(route_data)
 	print(r2)
@@ -167,6 +171,28 @@ def worker(name,timeframe):
 			"Last_Signal" : last_signal,
 	}
 
+	recv_data = engulfing(df)
+	buy, sell = engulfing(df)
+	print(recv_data)
+	print(buy,sell)
+	if sell or buy == True:
+
+		print("Candel")
+		if (sell == True) and (last_signal == -1):
+			print("Sell")
+			route_position = f"{url}/open_position/{name}/{timeframe}/sell/{comment}/{lot}"
+			print(route_position)
+			r2 = requests.get(route_position)
+			print(r2)
+
+		if (buy == True) and (last_signal == 1):
+			print("Buy")
+			route_position = f"{url}/open_position/{name}/{timeframe}/buy/{comment}/{lot}"
+			print(route_position)
+			r2 = requests.get(route_position)
+			print(r2)
+
+	"""
 	if last_signal == 1:
 		print("Buy")
 		route_position = f"{url}/open_position/{name}/{timeframe}/buy/{comment}/{lot}"
@@ -180,6 +206,7 @@ def worker(name,timeframe):
 		print(route_position)
 		r2 = requests.get(route_position)
 		print(r2)
+	"""
 
 	return data
 
@@ -235,7 +262,7 @@ def worker_intra_m15():
 		data = pd.Series(process).to_string()
 		print(data)
 
-		message_analyse(data,intra_webhook)
+		# message_analyse(data,intra_webhook)
 
 
 def worker_scalp_m5():
@@ -261,7 +288,7 @@ def worker_scalp_m3():
 
 
 
-# schedule.every(3).minutes.do(worker_intra)
+# schedule.every(1).minutes.do(worker_intra)
 schedule.every(5).minutes.do( worker_scalp_m5)
 schedule.every(15).minutes.do(worker_intra_m15)
 schedule.every(30).minutes.do(worker_intra)

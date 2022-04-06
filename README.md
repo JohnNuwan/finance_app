@@ -18,6 +18,76 @@
 
 ---
 
+
+### <span style="color:red">**| /!\ Pour Le Moment Le Script Ne gere Pas  /!\ |**</span>
+
+dans le Script RestApi/Serveur_RestAPI_Finance.py, La route 
+
+<code>/open_position/{name}/{timeframe}/{Type}/{comment}/{lot} </code>
+
+fait appel a la fonction  <span style="color:cyan">**chek_take_position(symbol,comment,Type)**</span> dans le script Functions/trading_function_and_strat.py 
+
+Ce code Fonctionne dans un fichier Seul . Mais dès qu'il est mis dans L'api celui-ci ne fonctionne plus.
+Mes Connaisance dans le developpement et dans la programmations informatique ne sont pas assez avancer.
+
+
+<code> 
+
+	def chek_take_position(symbol,comment,Type):
+		url = f"http://{host}:{port}"
+		print(url)
+		route_position = "/positions_en_court"
+		url = f"{url}{route_position}"
+		cs.log(url)
+		print(url)
+		count = 0
+		volume_count = 0
+
+		tt_pips = 0
+		profit = 0
+		tt_change = 0
+		itme_now = datetime.now()
+		recv_data = requests.get(url)
+		encode_data = json.loads(recv_data.text)
+		# cs.log(encode_data)
+		df = pd.read_json(encode_data)
+		list_frame = []
+
+		df.drop(columns=['external_id','time_msc', 'reason','time_update','time_update_msc'],inplace=True)
+		df['time'] = pd.to_datetime(df['time'], unit='s')
+		df.set_index(df['time'],inplace=True)
+		df["pct_chang"] =  df.apply(lambda row: calc_dif(row),axis=1)
+		df["Pips"] =  df.apply(lambda row: pips(row),axis=1)
+
+		print(df)
+		# symbol_df_filtre = pd.DataFrame()
+
+		for row in df.itertuples():
+			# print(f"{row.symbol}      {row.type}      {row.comment}      {row.profit}      {row.volume}")
+			if row.symbol == symbol:#
+				# print(row)
+				if row.comment == comment:
+					if row.type == Type:
+						volume_count += row.volume
+						profit += row.profit
+						tt_change += row.pct_chang
+						tt_pips += row.Pips
+						print(f"{row.symbol} {row.type} {row.ticket} Changement\t:\t",calc_dif(row))
+						count +=1
+
+		data_send = {
+				"Name": symbol,
+				"Type":Type,
+				"Total":count,
+				'TT_Volume': volume_count,
+				"profit": profit,
+				"TT_Change": tt_change,
+				"TT_Pips" : tt_pips
+		}
+		return data_send
+
+</code>
+
 ---
 ### Creation Venv
 

@@ -354,10 +354,11 @@ def engulfing(df):
 
 def chek_take_position(symbol,comment,Type):
 	url = f"http://{host}:{port}"
-
+	print(url)
 	route_position = "/positions_en_court"
 	url = f"{url}{route_position}"
 	cs.log(url)
+	print(url)
 	count = 0
 	volume_count = 0
 
@@ -460,6 +461,7 @@ def splite_reverse_position(name,Type,comment):
 				cs.print("Inverse symbol", style='danger')
 				print(f"Symbol : {row.symbol}\nType : {row.type}\nVolume : {row.volume}\nComment : {row.comment}\nProfit : {row.profit}\nPips : {row.Pips}")
 				cs.print("\nSPLITE OR CLOSE POSITIONS!!",justify='center')
+				
 				if row.profit < 0 or row.volume == 0.01:
 					cs.print("CLOSE ", justify='center',style='danger')
 					close_position(row.symbol,row.type,row.identifier,new_sl,row.volume,'Close Reverse')

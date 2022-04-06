@@ -99,3 +99,16 @@ Si vous ne faites pas cette démarche, certains retournements du cours vont para
 - Mineur / majeur : Certains supports/résistances sont mineurs et d'autres majeurs. Un support/résistance est dit mineur s'il n'a été testé qu'une fois (cassure de plus haut/plus bas) ou n'a jamais été testé (niveaux psychologiques). On parle de support/résistance majeur s'il relie des plus hauts/bas ayant été testés plusieurs fois par le passé (en tant que support ou résistance). On parle également de supports/résistances majeurs pour parler des niveaux de prix sur l'unité de temps supérieure à celle de votre trade. Le test d'un niveau majeur à un impact plus important et provoque souvent un fort rebond du cours. Les volumes de transactions sont plus grands.
 
 <img src="https://www.centralcharts.com/img/forum/resistances-supports-trading-9.png" alt="drawing" width="720"/>
+
+-----
+
+
+### Script position_en_court_renfort.py
+
+----
+ 
+
+Ce scripts S'occupe de manager les positions non Splité ( close / split / TP)
+
+Pour les Positions HOLD Le Script Va Faire appel a la strategy engulfin pour suivre le mouvement de la tendance, en mode ultra Scalp.
+de cette façons nous pourrons exploité l'ensemble du mouvement initier par la premiere Strategi 
